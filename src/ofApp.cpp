@@ -5,16 +5,18 @@ void ofApp::setup(){
 
     numSelected = 0;
 
-    string file = "points.json";
-    ofxJSONElement result;
-    bool parsingSuccessful = result.open(file);
-    for (int i=0; i<result.size(); i++) {
-        DataPoint d;
-        d.id = result[i]["id"].asString();
-        d.point.set(result[i]["point"][0].asFloat(),
-                    result[i]["point"][1].asFloat());
-        data.push_back(d);
-        mesh.addVertex(ofPoint(ofGetWidth(), ofGetHeight()) * d.point);
+    // CSV
+    ofBuffer buff = ofBufferFromFile("t-SNE_points.csv");
+
+    for (ofBuffer::Line it = buff.getLines().begin(); it != buff.getLines().end(); it++) {
+        std::vector<std::string> vals = ofSplitString(*it, ",");
+        tSNEPoint d;
+        if (vals[0] != "") {
+            d.id = std::stoi(vals[0]);
+            d.point.set(std::stof(vals[1]), std::stof(vals[2]));
+            data.push_back(d);
+            mesh.addVertex(d.point);
+        }
     }
 
     mesh.setMode(OF_PRIMITIVE_POINTS);
@@ -29,25 +31,26 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
     ofBackgroundGradient(ofColor(100), ofColor(20));
-//    for (int i=0; i<data.size(); i++) {
-//        if (data[i].selected) {
-//            ofSetColor(0, 255, 0, 180);
-//        }
-//        else {
-//            ofSetColor(255, 180);
-//        }
-//        ofDrawCircle(ofGetWidth() * data[i].point.x, ofGetHeight() * data[i].point.y, 4);
-//    }
+
     ofSetColor(255);
     drawPolylines();
+
+    navTransform.begin();
     mesh.draw();
+    navTransform.end();
+
     string str = "selected: " + ofToString(numSelected);
     ofDrawBitmapStringHighlight(str, 15, 15);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+
+}
+
+void ofApp::mouseScrolled(int x, int y, float scrollX, float scrollY) {
 
 }
 
@@ -88,7 +91,7 @@ void ofApp::updateSelected() {
     numSelected = 0;
     for (int i = 0; i < data.size(); i++)
     {
-        DataPoint& d = data[i];
+        tSNEPoint& d = data[i];
         d.selected = false;
         for (int j = 0; j < polylines.size(); j++)
         {
@@ -108,7 +111,7 @@ void ofApp::saveSelected() {
     ofxJSONElement json;
     for(int i = 0; i < data.size(); i++)
     {
-        DataPoint& d = data[i];
+        tSNEPoint& d = data[i];
         if (d.selected)
         {
             ofxJSONElement j;

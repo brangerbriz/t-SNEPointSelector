@@ -2,12 +2,13 @@
 
 #include "ofMain.h"
 #include "ofxJSON.h"
+#include "NavTransformer.h"
 
-struct DataPoint {
+struct tSNEPoint {
 public:
     string id;
     ofPoint point;
-    bool selected = false;
+    bool selected;
 };
 
 class ofApp : public ofBaseApp{
@@ -25,6 +26,7 @@ class ofApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 		void mouseEntered(int x, int y);
 		void mouseExited(int x, int y);
+        void mouseScrolled(int x, int y, float scrollX, float scrollY);
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
@@ -36,7 +38,7 @@ class ofApp : public ofBaseApp{
         int numSelected;
         ofPoint pWindowSize;
         ofMesh mesh; // mesh to hold the points
-        vector<DataPoint> data;
+        vector<tSNEPoint> data;
         vector<ofPolyline> polylines;
-		
+        NavTransformer navTransform;
 };
