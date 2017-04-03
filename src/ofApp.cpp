@@ -5,15 +5,24 @@ void ofApp::setup(){
 
     dataHand.loadTSNEPoints();
     dataHand.loadTSNESelections();
-    selector.getSelections() = dataHand.getTSNESelections();
+    tsneSelector.getSelections() = dataHand.getTSNESelections();
     auto points = dataHand.getTSNEPoints();
+
+    vector<ofVec2f> p;
+    for (auto point : points)
+    {
+        p.push_back(point.point);
+    }
+
+    knnSelector.get2DPoints() = p;
+    knnSelector.index();
+
     for (int i = 0; i < points.size(); i++)
     {
         mesh.addVertex(points[i].point);
     }
 
     mesh.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(2.0);
 
     cout << "Loaded " << points.size() << " data points" << endl;
 }
@@ -29,8 +38,20 @@ void ofApp::draw(){
     ofBackgroundGradient(ofColor(100), ofColor(20));
 
     navTransform.begin();
+
+        glPointSize(2.0);
         mesh.draw();
-        selector.draw();
+        tsneSelector.draw();
+
+        ofPoint mouse(ofGetMouseX(), ofGetMouseY());
+        auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
+        int nearestIndex = results[0].first;
+        ofPoint p = mesh.getVertices()[nearestIndex];
+        ofSetColor(255, 255, 0);
+        ofDrawCircle(p, 0.005);
+
+        ofSetColor(255);
+
     navTransform.end();
 }
 
@@ -54,7 +75,7 @@ void ofApp::keyReleased(int key){
     // enter key
     else if (key == 13)
     {
-        dataHand.saveTSNESelections(selector.getSelections());
+        dataHand.saveTSNESelections(tsneSelector.getSelections());
     }
 }
 
@@ -73,19 +94,19 @@ void ofApp::mousePressed(int x, int y, int button){
     // left mouse button
     if (button == 0)
     {
-        if (selector.selectionPending())
+        if (tsneSelector.selectionPending())
         {
-            selector.addPoint(navTransform.toDataSpace(ofPoint(x, y)));
+            tsneSelector.addPoint(navTransform.toDataSpace(ofPoint(x, y)));
         }
         else
         {
-            selector.beginSelection(navTransform.toDataSpace(ofPoint(x, y)));
+            tsneSelector.beginSelection(navTransform.toDataSpace(ofPoint(x, y)));
         }
     }
     // right mouse button, close shape
     else if (button == 2)
     {
-        selector.endSelection();
+        tsneSelector.endSelection();
     }
 }
 

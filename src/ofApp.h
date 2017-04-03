@@ -4,7 +4,9 @@
 #include "ofxJSON.h"
 #include "NavTransformer.h"
 #include "TSNESelect.h"
+#include "KNNSelect.h"
 #include "DataHandler.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -30,6 +32,7 @@ class ofApp : public ofBaseApp{
 
         ofMesh mesh; // mesh to hold the points
         NavTransformer navTransform;
-        TSNESelector selector;
+        TSNESelector tsneSelector;
+        KNNSelector knnSelector;
         DataHandler dataHand;
 };
