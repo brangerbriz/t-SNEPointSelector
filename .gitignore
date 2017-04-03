@@ -1,3 +1,6 @@
+t-SNE_selections.csv
+t-SNE_selection_data.csv
+
 Makefile
 config.make
 *.qbs

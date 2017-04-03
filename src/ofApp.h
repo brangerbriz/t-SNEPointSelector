@@ -3,13 +3,8 @@
 #include "ofMain.h"
 #include "ofxJSON.h"
 #include "NavTransformer.h"
-
-struct tSNEPoint {
-public:
-    string id;
-    ofPoint point;
-    bool selected;
-};
+#include "TSNESelect.h"
+#include "DataHandler.h"
 
 class ofApp : public ofBaseApp{
 
@@ -31,14 +26,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-        void drawPolylines();
-        void updateSelected();
         void saveSelected();
 
-        int numSelected;
-        ofPoint pWindowSize;
         ofMesh mesh; // mesh to hold the points
-        vector<tSNEPoint> data;
-        vector<ofPolyline> polylines;
         NavTransformer navTransform;
+        TSNESelector selector;
+        DataHandler dataHand;
 };

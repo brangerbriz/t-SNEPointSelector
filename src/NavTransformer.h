@@ -9,9 +9,10 @@ public:
     ~NavTransformer();
     void begin();
     void end();
-
     void keyPressed(ofKeyEventArgs &key);
     void mouseScrolled(ofMouseEventArgs &args);
+    ofPoint toDataSpace(ofPoint p);
+    ofPoint fromDataSpace(ofPoint p);
 
 protected:
     float _scale;

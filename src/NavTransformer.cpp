@@ -18,14 +18,28 @@ NavTransformer::~NavTransformer()
 void NavTransformer::begin()
 {
     ofPushMatrix();
-        ofTranslate(-_offset);
         ofTranslate(-_scale_offset);
+        ofTranslate(-_offset);
         ofScale(ofGetWidth() * _scale, ofGetHeight() * _scale, 0);
 }
 
 void NavTransformer::end()
 {
     ofPopMatrix();
+}
+
+ofPoint NavTransformer::toDataSpace(ofPoint p)
+{
+    p += _scale_offset + _offset;
+    p /= (ofPoint(ofGetWidth(), ofGetHeight()) * _scale);
+    return p;
+}
+
+ofPoint NavTransformer::fromDataSpace(ofPoint p)
+{
+    p -= _scale_offset + _offset;
+    p *= (ofPoint(ofGetWidth(), ofGetHeight()) * _scale);
+    return p;
 }
 
 void NavTransformer::keyPressed(ofKeyEventArgs &key)
@@ -42,7 +56,7 @@ void NavTransformer::mouseScrolled(ofMouseEventArgs &args)
     float scrollSpeed = 0.1;
     _scale += ofMap(args.scrollY, -1, 1, -scrollSpeed, scrollSpeed);
     //_offset -= ofPoint(ofGetWidth(), ofGetHeight());
-    _scale_offset.x = (ofGetWidth()/2) * (_scale-1);
-    _scale_offset.y = (ofGetHeight()/2) * (_scale-1);
+    _scale_offset.x = (ofGetWidth() * 0.5) * (_scale - 1);
+    _scale_offset.y = (ofGetHeight() * 0.5) * (_scale - 1);
 
 }
