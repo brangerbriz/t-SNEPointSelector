@@ -5,6 +5,44 @@ DataHandler::DataHandler()
 
 }
 
+void DataHandler::loadFeatures()
+{
+    _featureNames.clear();
+    _features.clear();
+
+    ofBuffer buff = ofBufferFromFile("lmd_features.csv");
+    int i = 0;
+    for (ofBuffer::Line it = buff.getLines().begin(); it != buff.getLines().end(); it++)
+    {
+        std::vector<std::string> vals = ofSplitString(*it, ",");
+        if (i == 0)
+        {
+            // hacky bullshit to get the equivalent of vector::pop_front()
+            std::reverse(std::begin(vals), std::end(vals));
+            vals.pop_back();
+            std::reverse(std::begin(vals), std::end(vals));
+            _featureNames = vals;
+        }
+        else
+        {
+            if (vals.size() > 1) {
+                _fileIdentifiers.push_back(vals[1]);
+
+                vector<float> feats;
+                for (int j = 2; j < vals.size(); j++)
+                {
+                    feats.push_back(std::stof(vals[j]));
+                }
+                _features.push_back(feats);
+            }
+        }
+        i++;
+    }
+
+//    cout << "size of featureNames: " << _featureNames.size() << endl;
+//    cout << "number of rows: " << _features.size() << endl;
+}
+
 void DataHandler::loadTSNEPoints()
 {
     _points.clear();
@@ -99,6 +137,11 @@ ofPolyline DataHandler::_stringToPoly(string str)
 vector<TSNESelection>& DataHandler::getTSNESelections()
 {
     return _selections;
+}
+
+const vector<string>& DataHandler::getFeatureNames() const
+{
+    return _featureNames;
 }
 
 const vector<TSNEPoint>& DataHandler::getTSNEPoints() const

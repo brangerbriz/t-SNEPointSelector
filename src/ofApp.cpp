@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    dataHand.loadFeatures();
     dataHand.loadTSNEPoints();
     dataHand.loadTSNESelections();
     tsneSelector.getSelections() = dataHand.getTSNESelections();
@@ -24,18 +25,20 @@ void ofApp::setup(){
 
     mesh.setMode(OF_PRIMITIVE_POINTS);
 
+    gui.setup(dataHand.getFeatureNames());
+
     cout << "Loaded " << points.size() << " data points" << endl;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    gui.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    ofBackgroundGradient(ofColor(100), ofColor(20));
+    ofBackground(50, 50, 50);
 
     navTransform.begin();
 
@@ -53,6 +56,7 @@ void ofApp::draw(){
         ofSetColor(255);
 
     navTransform.end();
+    gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -66,7 +70,7 @@ void ofApp::mouseScrolled(int x, int y, float scrollX, float scrollY) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-//    cout << "key pressed: " << key << endl;
+    cout << "key pressed: " << key << endl;
     // delete key
     if (key == 8)
     {
@@ -76,6 +80,11 @@ void ofApp::keyReleased(int key){
     else if (key == 13)
     {
         dataHand.saveTSNESelections(tsneSelector.getSelections());
+    }
+    // 'g' key
+    else if (key == 103 || key == 71)
+    {
+        gui.toggleEnabled();
     }
 }
 
@@ -94,19 +103,25 @@ void ofApp::mousePressed(int x, int y, int button){
     // left mouse button
     if (button == 0)
     {
-        if (tsneSelector.selectionPending())
+        if (!gui.isEnabled())
         {
-            tsneSelector.addPoint(navTransform.toDataSpace(ofPoint(x, y)));
-        }
-        else
-        {
-            tsneSelector.beginSelection(navTransform.toDataSpace(ofPoint(x, y)));
+            if (tsneSelector.selectionPending())
+            {
+                tsneSelector.addPoint(navTransform.toDataSpace(ofPoint(x, y)));
+            }
+            else
+            {
+                tsneSelector.beginSelection(navTransform.toDataSpace(ofPoint(x, y)));
+            }
         }
     }
     // right mouse button, close shape
     else if (button == 2)
     {
-        tsneSelector.endSelection();
+        if (!gui.isEnabled())
+        {
+            tsneSelector.endSelection();
+        }
     }
 }
 

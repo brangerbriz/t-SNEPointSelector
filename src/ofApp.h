@@ -6,7 +6,7 @@
 #include "TSNESelect.h"
 #include "KNNSelect.h"
 #include "DataHandler.h"
-
+#include "GUI.h"
 
 class ofApp : public ofBaseApp{
 
@@ -28,11 +28,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-        void saveSelected();
-
         ofMesh mesh; // mesh to hold the points
         NavTransformer navTransform;
         TSNESelector tsneSelector;
         KNNSelector knnSelector;
         DataHandler dataHand;
+        GUI gui;
 };
