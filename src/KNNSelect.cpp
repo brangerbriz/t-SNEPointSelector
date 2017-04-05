@@ -36,27 +36,43 @@ vector<pair<int, float> > KNNSelector::getKNearest(int nDIndex, int k, vector<bo
     vector<pair<int, float> > results;
     results.resize(_nDPoints.size());
 
-    float* point = &_nDPoints[nDIndex][0];
-    for (int i = 0; i < _nDPoints.size(); i++)
+
+    vector<vector<float> > nDPoints; // hold masked points
+    nDPoints.resize(_nDPoints.size());
+
+    // apply the mask, slow, but it gets the job done.
+    for (int i = 0; i < mask.size(); i++)
+    {
+        if (mask[i])
+        {
+            for (int j = 0; j < _nDPoints.size(); j++)
+            {
+                nDPoints[j].push_back(_nDPoints[j][i]);
+            }
+        }
+    }
+
+    float* point = &nDPoints[nDIndex][0];
+    for (int i = 0; i < nDPoints.size(); i++)
     {
         if (i == nDIndex) continue;
 
-        float* neighbor = &_nDPoints[i][0];
-        float dist = 1.0 - cosine_similarity(point, neighbor, _nDPoints[i].size());
+        float* neighbor = &nDPoints[i][0];
+        float dist = 1.0 - cosine_similarity(point, neighbor, nDPoints[i].size());
         results[i] = pair<int, float>(i, dist);
     }
 
-    for (int i = 0; i < 10; i++)
-    {
-        cout << "Before sort: " << results[i].first << ", " << results[i].second << endl;
-    }
+//    for (int i = 0; i < 10; i++)
+//    {
+//        cout << "Before sort: " << results[i].first << ", " << results[i].second << endl;
+//    }
 
     std::sort(results.begin(), results.end(), [](auto a, auto b) { return a.second < b.second; });
 
-    for (int i = 0; i < 10; i++)
-    {
-        cout << "After sort: " << results[i].first << ", " << results[i].second << endl;
-    }
+//    for (int i = 0; i < 10; i++)
+//    {
+//        cout << "After sort: " << results[i].first << ", " << results[i].second << endl;
+//    }
 
     vector<pair<int, float> > res(results.begin(), results.begin() + k);
     return res;
