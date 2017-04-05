@@ -11,6 +11,7 @@ public:
     void update();
     void draw();
     void setEnabled(bool enabled=true);
+    void setSelectedFiles(string selected, const vector<pair<string, float> >& neighbors);
     void toggleEnabled();
     void printFeatureMask();
     void log(string message);
@@ -24,8 +25,10 @@ protected:
 
     bool _enabled;
     ofxPanel _panel;
+    ofxPanel _filenamePanel;
     vector<string> _log;
     vector<ofxToggle*> _toggles;
+    vector<ofParameter<string> > _selectedMidiNames;
     vector<bool> _featureMask;
 };
 

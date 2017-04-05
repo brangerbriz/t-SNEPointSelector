@@ -43,27 +43,43 @@ void ofApp::draw(){
 
     navTransform.begin();
 
+        ofSetColor(255);
         glPointSize(2.0);
         mesh.draw();
         tsneSelector.draw();
+
+        glPointSize(15.0);
+        // Draw K nearest neighbors
+        ofMesh neighborMesh;
+        neighborMesh.setMode(OF_PRIMITIVE_POINTS);
+        ofSetColor(255);
+
+        ofColor near = ofColor::fromHex(0xFFB101);
+        ofColor far = ofColor::fromHex(0x4533A3);
+
+        // draw the nearest n points
+        for (auto neighbor : neighbors)
+        {
+            neighborMesh.addVertex(mesh.getVertices()[neighbor.first]);
+            float min = 0.0001;
+            float max = 0.0100;
+            neighborMesh.addColor(near.getLerped(far, ofMap(ofClamp(neighbor.second, min, max), min, max, 0.0, 1.0)));
+        }
+
+        neighborMesh.draw();
 
         // draw the nearest point
         ofPoint mouse(ofGetMouseX(), ofGetMouseY());
         auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
         int nearestIndex = results[0].first;
         ofPoint p = mesh.getVertices()[nearestIndex];
+        ofMesh pointMesh;
+        pointMesh.setMode(OF_PRIMITIVE_POINTS);
+        pointMesh.addVertex(p);
+
         ofSetColor(255, 255, 0);
-        ofDrawCircle(p, 0.003);
+        pointMesh.draw();
 
-        // draw the nearest n points
-        for (auto neighbor : neighbors)
-        {
-            ofPoint p = mesh.getVertices()[neighbor.first];
-            ofSetColor(255, 0, 255);
-            ofDrawCircle(p, 0.003);
-        }
-
-        ofSetColor(255);
 
     navTransform.end();
     gui.draw();
@@ -103,7 +119,15 @@ void ofApp::keyReleased(int key){
         ofPoint mouse(ofGetMouseX(), ofGetMouseY());
         auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
         int nearestIndex = results[0].first;
-        neighbors = knnSelector.getKNearest(nearestIndex, 30, gui.getFeatureMask());
+        neighbors = knnSelector.getKNearest(nearestIndex, 100, gui.getFeatureMask());
+
+        vector<pair<string, float>> labels;
+        for (int i = 1; i < neighbors.size(); i++)
+        {
+            labels.push_back(pair<string, float>(dataHand.getMidiIdentifier(neighbors[i].first), neighbors[i].second));
+        }
+
+        gui.setSelectedFiles(dataHand.getMidiIdentifier(neighbors[0].first), labels);
     }
     // 'p' key
     else if (key == 112 || key == 80)

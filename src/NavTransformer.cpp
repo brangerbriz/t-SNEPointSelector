@@ -53,9 +53,8 @@ void NavTransformer::keyPressed(ofKeyEventArgs &key)
 
 void NavTransformer::mouseScrolled(ofMouseEventArgs &args)
 {
-    float scrollSpeed = 0.1;
-    _scale += ofMap(args.scrollY, -1, 1, -scrollSpeed, scrollSpeed);
-    //_offset -= ofPoint(ofGetWidth(), ofGetHeight());
+//    float scrollSpeed = 0.1;
+    _scale = args.scrollY == 1 ? _scale * 2.0 : _scale * 0.5;
     _scale_offset.x = (ofGetWidth() * 0.5) * (_scale - 1);
     _scale_offset.y = (ofGetHeight() * 0.5) * (_scale - 1);
 

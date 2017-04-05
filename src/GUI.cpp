@@ -42,6 +42,17 @@ void GUI::setup(const vector<string> &toggleNames)
         count++;
     }
 
+    _filenamePanel.setDefaultWidth(400);
+    _filenamePanel.setup("Midi Files", "", x + width + 15, y);
+
+    for (int i = 0; i < 29; i++)
+    {
+        _selectedMidiNames.push_back(ofParameter<string>());
+        _filenamePanel.add(_selectedMidiNames[_selectedMidiNames.size() - 1].set("", ""));
+    }
+
+    _selectedMidiNames[0].set("Target", "None");
+
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
 }
@@ -56,6 +67,7 @@ void GUI::draw()
     if (isEnabled())
     {
         _panel.draw();
+        _filenamePanel.draw();
     }
 
 //    _drawLog();
@@ -109,6 +121,15 @@ inline void setMaskValues(vector<bool>& mask, int start, int end, bool val)
     for (; start <= end; start++)
     {
         mask[start] = val;
+    }
+}
+
+void GUI::setSelectedFiles(string selected, const vector<pair<string, float> >& neighbors)
+{
+    _selectedMidiNames[0].set("Target", selected);
+    for (int i = 1; i < min(29, int(neighbors.size())); i++)
+    {
+        _selectedMidiNames[i].set("", ofToString(neighbors[i].second, 4) + ", " + neighbors[i].first);
     }
 }
 
@@ -197,3 +218,4 @@ void GUI::_drawLog()
     ofPopStyle();
 
 }
+
