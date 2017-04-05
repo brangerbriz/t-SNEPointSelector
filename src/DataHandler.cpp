@@ -134,6 +134,16 @@ ofPolyline DataHandler::_stringToPoly(string str)
     return poly;
 }
 
+const vector<vector<float>>& DataHandler::getFeatures() const
+{
+    return _features;
+}
+
+//const vector<vector<float>> DataHandler::getFeatures(vector<vector<float>> mask) const
+//{
+
+//}
+
 vector<TSNESelection>& DataHandler::getTSNESelections()
 {
     return _selections;

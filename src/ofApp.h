@@ -29,6 +29,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
         ofMesh mesh; // mesh to hold the points
+        vector<pair<int, float> > neighbors;
         NavTransformer navTransform;
         TSNESelector tsneSelector;
         KNNSelector knnSelector;

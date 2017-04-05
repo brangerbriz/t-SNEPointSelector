@@ -1,4 +1,16 @@
 #include "KNNSelect.h"
+
+float cosine_similarity(float *A, float *B, unsigned int Vector_Length)
+{
+    float dot = 0.0, denom_a = 0.0, denom_b = 0.0 ;
+     for(unsigned int i = 0u; i < Vector_Length; ++i) {
+        dot += A[i] * B[i] ;
+        denom_a += A[i] * A[i] ;
+        denom_b += B[i] * B[i] ;
+    }
+    return dot / (sqrt(denom_a) * sqrt(denom_b)) ;
+}
+
 KNNSelector::KNNSelector():
     _2DHash(_2DPoints)
 {
@@ -18,7 +30,44 @@ ofx::KDTree<ofVec2f>::SearchResults KNNSelector::getKNearest2D(ofPoint point, in
     return _2DHashResults;
 }
 
+vector<pair<int, float> > KNNSelector::getKNearest(int nDIndex, int k, vector<bool> mask)
+{
+    cout << "Finding " << k << " neighbors near " << nDIndex << endl;
+    vector<pair<int, float> > results;
+    results.resize(_nDPoints.size());
+
+    float* point = &_nDPoints[nDIndex][0];
+    for (int i = 0; i < _nDPoints.size(); i++)
+    {
+        if (i == nDIndex) continue;
+
+        float* neighbor = &_nDPoints[i][0];
+        float dist = 1.0 - cosine_similarity(point, neighbor, _nDPoints[i].size());
+        results[i] = pair<int, float>(i, dist);
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "Before sort: " << results[i].first << ", " << results[i].second << endl;
+    }
+
+    std::sort(results.begin(), results.end(), [](auto a, auto b) { return a.second < b.second; });
+
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "After sort: " << results[i].first << ", " << results[i].second << endl;
+    }
+
+    vector<pair<int, float> > res(results.begin(), results.begin() + k);
+    return res;
+}
+
 vector<ofVec2f>& KNNSelector::get2DPoints()
 {
     return _2DPoints;
+}
+
+vector<vector<float> >& KNNSelector::getNDPoints()
+{
+    return _nDPoints;
 }

@@ -16,6 +16,7 @@ void ofApp::setup(){
     }
 
     knnSelector.get2DPoints() = p;
+    knnSelector.getNDPoints() = dataHand.getFeatures();
     knnSelector.index();
 
     for (int i = 0; i < points.size(); i++)
@@ -46,12 +47,21 @@ void ofApp::draw(){
         mesh.draw();
         tsneSelector.draw();
 
+        // draw the nearest point
         ofPoint mouse(ofGetMouseX(), ofGetMouseY());
         auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
         int nearestIndex = results[0].first;
         ofPoint p = mesh.getVertices()[nearestIndex];
         ofSetColor(255, 255, 0);
-        ofDrawCircle(p, 0.005);
+        ofDrawCircle(p, 0.003);
+
+        // draw the nearest n points
+        for (auto neighbor : neighbors)
+        {
+            ofPoint p = mesh.getVertices()[neighbor.first];
+            ofSetColor(255, 0, 255);
+            ofDrawCircle(p, 0.003);
+        }
 
         ofSetColor(255);
 
@@ -85,6 +95,15 @@ void ofApp::keyReleased(int key){
     else if (key == 103 || key == 71)
     {
         gui.toggleEnabled();
+    }
+    // 'n' key
+    else if (key == 110)
+    {
+        // draw the nearest point
+        ofPoint mouse(ofGetMouseX(), ofGetMouseY());
+        auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
+        int nearestIndex = results[0].first;
+        neighbors = knnSelector.getKNearest(nearestIndex, 30, gui.getFeatureMask());
     }
 }
 

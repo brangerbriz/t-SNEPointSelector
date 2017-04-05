@@ -20,6 +20,8 @@ public:
     void loadTSNESelections();
     void saveTSNESelections(const vector<TSNESelection>& selections);
 
+    const vector<vector<float>>& getFeatures() const;
+//    const vector<vector<float>> getFeatures(vector<vector<float>> mask) const;
     const vector<TSNEPoint>& getTSNEPoints() const;
     const vector<string>& getFeatureNames() const;
     vector<TSNESelection>& getTSNESelections();
