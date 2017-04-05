@@ -39,7 +39,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    ofBackground(50, 50, 50);
+    ofBackground(50);
 
     navTransform.begin();
 
@@ -119,7 +119,7 @@ void ofApp::keyReleased(int key){
         ofPoint mouse(ofGetMouseX(), ofGetMouseY());
         auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
         int nearestIndex = results[0].first;
-        neighbors = knnSelector.getKNearest(nearestIndex, 100, gui.getFeatureMask());
+        neighbors = knnSelector.getKNearest(nearestIndex, gui.getNumNeighbors(), gui.getFeatureMask());
 
         vector<pair<string, float>> labels;
         for (int i = 1; i < neighbors.size(); i++)

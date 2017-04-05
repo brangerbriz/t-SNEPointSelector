@@ -17,6 +17,7 @@ public:
     void log(string message);
     bool isEnabled();
     const vector<bool> getFeatureMask();
+    int getNumNeighbors();
 protected:
 
     void _updateFeatureMask();
@@ -26,8 +27,14 @@ protected:
     bool _enabled;
     ofxPanel _panel;
     ofxPanel _filenamePanel;
+    ofxPanel _knnPanel;
+    ofParameterGroup _featureGroup;
+    ofParameterGroup _knnSettingsGroup;
+    ofParameterGroup _selectionGroup;
+    ofParameterGroup _panelGroup;
+    ofParameter<int> _knnNumNeighbors;
     vector<string> _log;
-    vector<ofxToggle*> _toggles;
+    vector<ofParameter<bool> > _featureToggles;
     vector<ofParameter<string> > _selectedMidiNames;
     vector<bool> _featureMask;
 };

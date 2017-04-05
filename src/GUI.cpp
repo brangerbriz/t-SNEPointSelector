@@ -11,15 +11,10 @@ void GUI::setup(const vector<string> &toggleNames)
     int x = 50;
     int width = 500;
 
-    _panel.setDefaultWidth(width);
-    _panel.setup("KNN Features", "panel0.xml", x, y);
-
-    int count = 0;
-    int numPerPanel = 100;
+    // Features group
+    _featureToggles.resize(toggleNames.size());
     for (int i = 0; i < toggleNames.size(); i++)
     {
-        ofxToggle * tog = new ofxToggle();
-        _toggles.push_back(tog);
         string name = toggleNames[i];
 
         if (i >= 1 && i <= 128)
@@ -38,20 +33,34 @@ void GUI::setup(const vector<string> &toggleNames)
             i = 288; // skip
         }
 
-        _panel.add(tog->setup(name, true));
-        count++;
+        _featureToggles[i].set(name, true);
+        _featureGroup.add(_featureToggles[i]);
     }
 
-    _filenamePanel.setDefaultWidth(400);
-    _filenamePanel.setup("Midi Files", "", x + width + 15, y);
+    _featureGroup.setName("Features");
+    _panelGroup.add(_featureGroup);
+
+    // KNN settings group
+    _knnNumNeighbors.set("k-neighbors", 100, 1, 1000);
+    _knnSettingsGroup.add(_knnNumNeighbors);
+    _knnSettingsGroup.setName("Nearest Neighbors Settings");
+    _panelGroup.add(_knnSettingsGroup);
+
+    // Selected neighbors group
+    _selectionGroup.setName("Neighbors");
 
     for (int i = 0; i < 29; i++)
     {
         _selectedMidiNames.push_back(ofParameter<string>());
-        _filenamePanel.add(_selectedMidiNames[_selectedMidiNames.size() - 1].set("", ""));
+        _selectionGroup.add(_selectedMidiNames[_selectedMidiNames.size() - 1].set("", ""));
     }
 
     _selectedMidiNames[0].set("Target", "None");
+
+    _panelGroup.add(_selectionGroup);
+
+    _panel.setDefaultWidth(width);
+    _panel.setup(_panelGroup, "panel0.xml", x, y);
 
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
@@ -109,6 +118,11 @@ void GUI::log(string message)
 const vector<bool> GUI::getFeatureMask()
 {
     return _featureMask;
+}
+
+int GUI::getNumNeighbors()
+{
+    return _knnNumNeighbors.get();
 }
 
 bool GUI::isEnabled()
@@ -171,7 +185,7 @@ void GUI::_updateFeatureMask()
     for (int i = 0; i < _featureMask.size(); i++)
     {
         bool val = false;
-        if (*_toggles[_featureIndex2ToggleIndex(i)]) val = true;
+        if (_featureToggles[_featureIndex2ToggleIndex(i)]) val = true;
 
         if (i >= 1 && i <= 128)
         {
