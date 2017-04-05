@@ -7,6 +7,7 @@
 #include "KNNSelect.h"
 #include "DataHandler.h"
 #include "GUI.h"
+#include "MidiPlayer.h"
 
 class ofApp : public ofBaseApp{
 
@@ -35,4 +36,5 @@ class ofApp : public ofBaseApp{
         KNNSelector knnSelector;
         DataHandler dataHand;
         GUI gui;
+        MidiPlayer midiPlayer;
 };

@@ -158,3 +158,8 @@ const vector<TSNEPoint>& DataHandler::getTSNEPoints() const
 {
     return _points;
 }
+
+string DataHandler::getMidiIdentifier(int index)
+{
+    return _fileIdentifiers[index];
+}

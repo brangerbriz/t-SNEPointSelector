@@ -57,6 +57,8 @@ void GUI::draw()
     {
         _panel.draw();
     }
+
+//    _drawLog();
 }
 
 void GUI::setEnabled(bool enabled)
@@ -85,6 +87,11 @@ void GUI::printFeatureMask()
     {
         if (_featureMask[i]) cout << i << endl;
     }
+}
+
+void GUI::log(string message)
+{
+    _log.push_back(message);
 }
 
 const vector<bool> GUI::getFeatureMask()
@@ -168,4 +175,25 @@ void GUI::_updateFeatureMask()
             _featureMask[i] = val;
         }
     }
+}
+
+void GUI::_drawLog()
+{
+    int width = 500;
+    int height = 400;
+    int margin = 20;
+    int x = ofGetWidth() - width - margin;
+    int y = margin;
+
+    ofPushStyle();
+        ofSetColor(0);
+        ofDrawRectangle(x, y, width, height);
+        ofSetColor(255);
+        y += margin;
+        for (int i = 0; min(5, int(_log.size())); i++) {
+            ofDrawBitmapString(_log[i], x + margin, y);
+            y += 20;
+        }
+    ofPopStyle();
+
 }
