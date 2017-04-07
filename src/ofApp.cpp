@@ -28,6 +28,7 @@ void ofApp::setup(){
 
     gui.setup(dataHand.getFeatureNames());
     gui.getKnnSearchButton().addListener(this, &ofApp::knnSearch);
+    gui.getKnnSaveButton().addListener(this, &ofApp::knnSave);
 
     cout << "Loaded " << points.size() << " data points" << endl;
 }
@@ -101,13 +102,12 @@ void ofApp::knnSearch()
 {
 
     string id = gui.getSelectedFile();
-    cout << "id is " << id << endl;
     if (!id.empty())
     {
         int index = dataHand.getMidiIndexFromIdentifier(id);
         neighbors = knnSelector.getKNearest(index, gui.getNumNeighbors(), gui.getFeatureMask());
-
         vector<pair<string, float>> labels;
+        // weird bug, neighbors[0] always has value 0, 0, so skip it.
         for (int i = 1; i < neighbors.size(); i++)
         {
             labels.push_back(pair<string, float>(dataHand.getMidiIdentifier(neighbors[i].first), neighbors[i].second));
@@ -116,6 +116,15 @@ void ofApp::knnSearch()
         gui.setSelectedFiles(dataHand.getMidiIdentifier(index), labels);
     }
 
+}
+
+void ofApp::knnSave()
+{
+    string selected = gui.getSelectedFile();
+    if (!selected.empty() && neighbors.size() > 0)
+    {
+        dataHand.saveKnnSearch(selected, neighbors, gui.getFeatureMask());
+    }
 }
 
 //--------------------------------------------------------------

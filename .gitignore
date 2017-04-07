@@ -1,3 +1,5 @@
+bin/data/knn_searches/*
+!bin/data/knn_searches/.gitkeep
 bin/data/lmd_midi
 t-SNE_selections.csv
 t-SNE_selection_data.csv

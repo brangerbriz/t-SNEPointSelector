@@ -21,6 +21,7 @@ public:
     int getNumNeighbors();
 
     ofxButton& getKnnSearchButton();
+    ofxButton& getKnnSaveButton();
 
 protected:
 
@@ -38,6 +39,7 @@ protected:
     ofParameterGroup _panelGroup;
     ofParameter<int> _knnNumNeighbors;
     ofxButton _knnSearchButton;
+    ofxButton _knnSaveButton;
     vector<string> _log;
     vector<ofParameter<bool> > _featureToggles;
     vector<ofParameter<string> > _selectedMidiNames;

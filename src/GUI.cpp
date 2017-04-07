@@ -62,6 +62,7 @@ void GUI::setup(const vector<string> &toggleNames)
     _panel.setDefaultWidth(width);
     _panel.setup(_panelGroup, "panel0.xml", x, y);
     _panel.add(_knnSearchButton.setup("Search"));
+    _panel.add(_knnSaveButton.setup("Save"));
 
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
@@ -158,6 +159,10 @@ ofxButton &GUI::getKnnSearchButton()
     return _knnSearchButton;
 }
 
+ofxButton &GUI::getKnnSaveButton()
+{
+    return _knnSaveButton;
+}
 
 // gross as fuck. Sorry to whoever reads this...
 int GUI::_featureIndex2ToggleIndex(int featIndex)

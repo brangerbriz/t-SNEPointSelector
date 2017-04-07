@@ -30,6 +30,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
         void knnSearch();
+        void knnSave();
 
         ofMesh mesh; // mesh to hold the points
         vector<pair<int, float> > neighbors;

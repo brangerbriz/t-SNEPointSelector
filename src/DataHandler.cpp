@@ -106,6 +106,20 @@ void DataHandler::saveTSNESelections(const vector<TSNESelection>& selections){
     ofBufferToFile("t-SNE_selections.csv", buff2);
 }
 
+void DataHandler::saveKnnSearch(string selected, const vector<pair<int, float> >& neighbors, const vector<bool>& featureMask)
+{
+    string csv = ",id,neighbor_id,distance\n";
+    for (int i = 0; i < neighbors.size(); i++)
+    {
+        string neighborId = getMidiIdentifier(neighbors[i].first);
+        string distance = ofToString(neighbors[i].second);
+        csv += ofToString(i) + "," + selected + "," + neighborId + "," + distance + "\n";
+    }
+
+    ofBuffer buff(csv);
+    ofBufferToFile("knn_searches/knn_" + selected + ".csv", buff);
+}
+
 string DataHandler::_polyToString(const ofPolyline poly)
 {
     string str = "";

@@ -19,6 +19,7 @@ public:
     void loadTSNEPoints();
     void loadTSNESelections();
     void saveTSNESelections(const vector<TSNESelection>& selections);
+    void saveKnnSearch(string selected, const vector<pair<int, float> >& neighbors, const vector<bool> &featureMask);
 
     string getMidiIdentifier(int index);
     int getMidiIndexFromIdentifier(string id);
