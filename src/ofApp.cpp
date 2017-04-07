@@ -157,13 +157,14 @@ void ofApp::keyReleased(int key){
     // 'p' key
     else if (key == 112 || key == 80)
     {
-        // draw the nearest point
-        ofPoint mouse(ofGetMouseX(), ofGetMouseY());
-        auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
-        int nearestIndex = results[0].first;
-        string filename = "lmd_midi/" + dataHand.getMidiIdentifier(nearestIndex);
-        cout << "Playing " << filename << endl;
-        midiPlayer.play(filename);
+        string selected = gui.getSelectedFile();
+        if (!selected.empty())
+        {
+            int index = dataHand.getMidiIndexFromIdentifier(selected);
+            string filename = "lmd_midi/" + dataHand.getMidiIdentifier(index);
+            cout << "Playing " << filename << endl;
+            midiPlayer.play(filename);
+        }
     }
     // 's' key
     else if (key == 115)

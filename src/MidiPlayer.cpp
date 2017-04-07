@@ -23,7 +23,7 @@ void MidiPlayer::play(string filename)
 
     cout << "Starting player" << endl;
     // HACK
-    ofSystem("aconnect 14:0 129:0");
+    ofSystem("aconnect 14:0 128:0");
     _player.start();
     _currentFile = filename;
     _isPlaying = true;
@@ -34,7 +34,7 @@ void MidiPlayer::stop()
     _isPlaying = false;
     _player.stop();
     // HACK
-    ofSystem("aconnect -d 14:0 129:0");
+    ofSystem("aconnect -d 14:0 128:0");
 }
 
 bool MidiPlayer::isPlaying()
