@@ -12,12 +12,16 @@ public:
     void draw();
     void setEnabled(bool enabled=true);
     void setSelectedFiles(string selected, const vector<pair<string, float> >& neighbors);
+    string getSelectedFile();
     void toggleEnabled();
     void printFeatureMask();
     void log(string message);
     bool isEnabled();
     const vector<bool> getFeatureMask();
     int getNumNeighbors();
+
+    ofxButton& getKnnSearchButton();
+
 protected:
 
     void _updateFeatureMask();
@@ -33,6 +37,7 @@ protected:
     ofParameterGroup _selectionGroup;
     ofParameterGroup _panelGroup;
     ofParameter<int> _knnNumNeighbors;
+    ofxButton _knnSearchButton;
     vector<string> _log;
     vector<ofParameter<bool> > _featureToggles;
     vector<ofParameter<string> > _selectedMidiNames;

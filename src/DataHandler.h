@@ -21,6 +21,7 @@ public:
     void saveTSNESelections(const vector<TSNESelection>& selections);
 
     string getMidiIdentifier(int index);
+    int getMidiIndexFromIdentifier(string id);
     const vector<vector<float>>& getFeatures() const;
 //    const vector<vector<float>> getFeatures(vector<vector<float>> mask) const;
     const vector<TSNEPoint>& getTSNEPoints() const;

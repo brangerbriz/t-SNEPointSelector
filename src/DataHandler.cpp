@@ -38,7 +38,6 @@ void DataHandler::loadFeatures()
         }
         i++;
     }
-
 //    cout << "size of featureNames: " << _featureNames.size() << endl;
 //    cout << "number of rows: " << _features.size() << endl;
 }
@@ -162,4 +161,17 @@ const vector<TSNEPoint>& DataHandler::getTSNEPoints() const
 string DataHandler::getMidiIdentifier(int index)
 {
     return _fileIdentifiers[index];
+}
+
+int DataHandler::getMidiIndexFromIdentifier(string id)
+{
+    for (int i = 0; i < _fileIdentifiers.size(); i++)
+    {
+        if (_fileIdentifiers[i] == id)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }

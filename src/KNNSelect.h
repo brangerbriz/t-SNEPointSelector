@@ -19,6 +19,7 @@ protected:
     ofx::KDTree<ofVec2f>::SearchResults _2DHashResults;
     vector<ofVec2f> _2DPoints;
     vector<vector<float> > _nDPoints;
+
 };
 
 #endif // KNNSELECT_H

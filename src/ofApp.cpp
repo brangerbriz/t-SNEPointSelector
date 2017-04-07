@@ -27,6 +27,7 @@ void ofApp::setup(){
     mesh.setMode(OF_PRIMITIVE_POINTS);
 
     gui.setup(dataHand.getFeatureNames());
+    gui.getKnnSearchButton().addListener(this, &ofApp::knnSearch);
 
     cout << "Loaded " << points.size() << " data points" << endl;
 }
@@ -68,6 +69,17 @@ void ofApp::draw(){
 
         neighborMesh.draw();
 
+        // draw the currently selected point
+        string selected = gui.getSelectedFile();
+        if (!selected.empty())
+        {
+            ofMesh pointMesh;
+            pointMesh.setMode(OF_PRIMITIVE_POINTS);
+            pointMesh.addVertex(knnSelector.get2DPoints()[dataHand.getMidiIndexFromIdentifier(selected)]);
+            ofSetColor(255, 0, 0);
+            pointMesh.draw();
+        }
+
         // draw the nearest point
         ofPoint mouse(ofGetMouseX(), ofGetMouseY());
         auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
@@ -83,6 +95,27 @@ void ofApp::draw(){
 
     navTransform.end();
     gui.draw();
+}
+
+void ofApp::knnSearch()
+{
+
+    string id = gui.getSelectedFile();
+    cout << "id is " << id << endl;
+    if (!id.empty())
+    {
+        int index = dataHand.getMidiIndexFromIdentifier(id);
+        neighbors = knnSelector.getKNearest(index, gui.getNumNeighbors(), gui.getFeatureMask());
+
+        vector<pair<string, float>> labels;
+        for (int i = 1; i < neighbors.size(); i++)
+        {
+            labels.push_back(pair<string, float>(dataHand.getMidiIdentifier(neighbors[i].first), neighbors[i].second));
+        }
+
+        gui.setSelectedFiles(dataHand.getMidiIdentifier(index), labels);
+    }
+
 }
 
 //--------------------------------------------------------------
@@ -111,23 +144,6 @@ void ofApp::keyReleased(int key){
     else if (key == 103 || key == 71)
     {
         gui.toggleEnabled();
-    }
-    // 'n' key
-    else if (key == 110 || key == 78)
-    {
-        // draw the nearest point
-        ofPoint mouse(ofGetMouseX(), ofGetMouseY());
-        auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
-        int nearestIndex = results[0].first;
-        neighbors = knnSelector.getKNearest(nearestIndex, gui.getNumNeighbors(), gui.getFeatureMask());
-
-        vector<pair<string, float>> labels;
-        for (int i = 1; i < neighbors.size(); i++)
-        {
-            labels.push_back(pair<string, float>(dataHand.getMidiIdentifier(neighbors[i].first), neighbors[i].second));
-        }
-
-        gui.setSelectedFiles(dataHand.getMidiIdentifier(neighbors[0].first), labels);
     }
     // 'p' key
     else if (key == 112 || key == 80)
@@ -172,6 +188,16 @@ void ofApp::mousePressed(int x, int y, int button){
             {
                 tsneSelector.beginSelection(navTransform.toDataSpace(ofPoint(x, y)));
             }
+        }
+        else
+        {
+            // draw the nearest point
+            vector<pair<string, float>> labels;
+            labels.resize(gui.getNumNeighbors());
+            ofPoint mouse(ofGetMouseX(), ofGetMouseY());
+            auto results = knnSelector.getKNearest2D(navTransform.toDataSpace(mouse), 1);
+            gui.setSelectedFiles(dataHand.getMidiIdentifier(results[0].first), labels);
+//            neighbors.clear();
         }
     }
     // right mouse button, close shape

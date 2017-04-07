@@ -40,12 +40,6 @@ void GUI::setup(const vector<string> &toggleNames)
     _featureGroup.setName("Features");
     _panelGroup.add(_featureGroup);
 
-    // KNN settings group
-    _knnNumNeighbors.set("k-neighbors", 100, 1, 1000);
-    _knnSettingsGroup.add(_knnNumNeighbors);
-    _knnSettingsGroup.setName("Nearest Neighbors Settings");
-    _panelGroup.add(_knnSettingsGroup);
-
     // Selected neighbors group
     _selectionGroup.setName("Neighbors");
 
@@ -59,8 +53,15 @@ void GUI::setup(const vector<string> &toggleNames)
 
     _panelGroup.add(_selectionGroup);
 
+    // KNN settings group
+    _knnNumNeighbors.set("k-neighbors", 100, 1, 1000);
+    _knnSettingsGroup.add(_knnNumNeighbors);
+    _knnSettingsGroup.setName("Nearest Neighbors Settings");
+    _panelGroup.add(_knnSettingsGroup);
+
     _panel.setDefaultWidth(width);
     _panel.setup(_panelGroup, "panel0.xml", x, y);
+    _panel.add(_knnSearchButton.setup("Search"));
 
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
@@ -143,9 +144,20 @@ void GUI::setSelectedFiles(string selected, const vector<pair<string, float> >& 
     _selectedMidiNames[0].set("Target", selected);
     for (int i = 1; i < min(29, int(neighbors.size())); i++)
     {
-        _selectedMidiNames[i].set("", ofToString(neighbors[i].second, 4) + ", " + neighbors[i].first);
+        _selectedMidiNames[i].set("", !neighbors[i].first.empty() ? ofToString(neighbors[i].second, 4) + ", " + neighbors[i].first : "");
     }
 }
+
+string GUI::getSelectedFile()
+{
+   return _selectedMidiNames[0].get() != "None" ? _selectedMidiNames[0].get() : "";
+}
+
+ofxButton &GUI::getKnnSearchButton()
+{
+    return _knnSearchButton;
+}
+
 
 // gross as fuck. Sorry to whoever reads this...
 int GUI::_featureIndex2ToggleIndex(int featIndex)
@@ -232,4 +244,3 @@ void GUI::_drawLog()
     ofPopStyle();
 
 }
-
