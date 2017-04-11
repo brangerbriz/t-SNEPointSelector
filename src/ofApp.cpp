@@ -161,7 +161,8 @@ void ofApp::keyReleased(int key){
         if (!selected.empty())
         {
             int index = dataHand.getMidiIndexFromIdentifier(selected);
-            string filename = "lmd_midi/" + dataHand.getMidiIdentifier(index);
+//            string filename = "lmd_midi/" + dataHand.getMidiIdentifier(index);
+            string filename = "lmd_mono_tracks_seperated/" + dataHand.getMidiIdentifier(index);
             cout << "Playing " << filename << endl;
             midiPlayer.play(filename);
         }

@@ -10,7 +10,9 @@ void DataHandler::loadFeatures()
     _featureNames.clear();
     _features.clear();
 
-    ofBuffer buff = ofBufferFromFile("lmd_features.csv");
+    ofBuffer buff = ofBufferFromFile("lmd_mono_tracks_features.csv");
+//    ofBuffer buff = ofBufferFromFile("lmd_features.csv");
+
     int i = 0;
     for (ofBuffer::Line it = buff.getLines().begin(); it != buff.getLines().end(); it++)
     {
@@ -45,7 +47,8 @@ void DataHandler::loadFeatures()
 void DataHandler::loadTSNEPoints()
 {
     _points.clear();
-    ofBuffer buff = ofBufferFromFile("t-SNE_points.csv");
+    ofBuffer buff = ofBufferFromFile("t-SNE_points_mono.csv");
+//    ofBuffer buff = ofBufferFromFile("t-SNE_points.csv");
     for (ofBuffer::Line it = buff.getLines().begin(); it != buff.getLines().end(); it++)
     {
         std::vector<std::string> vals = ofSplitString(*it, ",");
