@@ -16,7 +16,7 @@ void GUI::setup(const vector<string> &toggleNames)
     for (int i = 0; i < toggleNames.size(); i++)
     {
         string name = toggleNames[i];
-
+        cout << name << endl;
         if (i >= 1 && i <= 128)
         {
             name = "Melodic_Interval_Histogram";

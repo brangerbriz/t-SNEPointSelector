@@ -1,5 +1,5 @@
 #pragma once
-
+#include "defines.h"
 #include "ofMain.h"
 #include "ofxJSON.h"
 #include "NavTransformer.h"

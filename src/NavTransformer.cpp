@@ -57,5 +57,4 @@ void NavTransformer::mouseScrolled(ofMouseEventArgs &args)
     _scale = args.scrollY == 1 ? _scale * 2.0 : _scale * 0.5;
     _scale_offset.x = (ofGetWidth() * 0.5) * (_scale - 1);
     _scale_offset.y = (ofGetHeight() * 0.5) * (_scale - 1);
-
 }

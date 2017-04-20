@@ -1,5 +1,6 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
+#include "defines.h"
 #include "ofMain.h"
 #include "TSNESelect.h"
 
