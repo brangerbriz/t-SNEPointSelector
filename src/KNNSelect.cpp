@@ -62,7 +62,7 @@ vector<pair<int, float> > KNNSelector::getKNearest(int nDIndex, int k, vector<bo
         results[i] = pair<int, float>(i, dist);
     }
 
-    std::sort(results.begin(), results.end(), [](auto a, auto b) { return a.second < b.second; });
+    std::sort(results.begin(), results.end(), [](const pair<int, float>& a, const pair<int, float>& b) { return a.second < b.second; });
     vector<pair<int, float> > res(results.begin(), results.begin() + k);
     return res;
 }
