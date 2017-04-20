@@ -34,3 +34,9 @@ The current version of this project is INCREDIBLY experimental. Little to no tho
 - Once a midi note has been selected, press the "search" button on the UI panel to execute a K-nearest neighbor search. Only features that are enabled in the UI panel will be applied to the search. Enable/disable features to alter your search in different ways.
 - Press "save" to save your current search to csv (`bin/data/knn_searches`)
 - Pressing "g" toggles between KNN search mode (you see the GUI) and labeling mode (you don't see the GUI). In labeling mode, left mouse click to draw shapes around data points and right mouse click to close those shapes. Once you've "labeled" data points, labels can be saved to a csv in `bin/data/t-sne_selections` by pressing ENTER.
+
+## Two Datasets
+
+Two datasets are currently supported by this applications. The first, is the entire [Lakh Midi Dataset](http://colinraffel.com/projects/lmd/) (LMD). The second is a collection of all monophonic tracks (seperated from their original Midi files) in LMD.
+
+To switch between them, enable/disable the pre-processor directive `MONO_TRACKS` in `defines.h`.
