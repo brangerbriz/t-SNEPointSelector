@@ -22,7 +22,7 @@ void KNNSelector::index()
     _2DHash.buildIndex();
 }
 
-ofx::KDTree<ofVec2f>::SearchResults KNNSelector::getKNearest2D(ofPoint point, int k)
+ofx::KDTree<ofVec2f>::SearchResults KNNSelector::getKNearest2D(ofVec2f point, int k)
 {
     _2DHashResults.clear();
     _2DHashResults.reserve(k);

@@ -76,7 +76,8 @@ void ofApp::draw(){
         {
             ofMesh pointMesh;
             pointMesh.setMode(OF_PRIMITIVE_POINTS);
-            pointMesh.addVertex(knnSelector.get2DPoints()[dataHand.getMidiIndexFromIdentifier(selected)]);
+            ofVec3f v = knnSelector.get2DPoints()[dataHand.getMidiIndexFromIdentifier(selected)];
+            pointMesh.addVertex(v);
             ofSetColor(255, 0, 0);
             pointMesh.draw();
         }
