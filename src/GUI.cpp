@@ -64,6 +64,8 @@ void GUI::setup(const vector<string> &toggleNames)
     _panel.add(_knnSearchButton.setup("Search"));
     _panel.add(_knnSaveButton.setup("Save"));
 
+    _filenamePanel.setup();
+
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
 }
