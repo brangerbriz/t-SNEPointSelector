@@ -46,7 +46,7 @@ void GUI::setup(const vector<string> &toggleNames)
     for (int i = 0; i < 29; i++)
     {
         _selectedMidiNames.push_back(ofParameter<string>());
-        _selectionGroup.add(_selectedMidiNames[_selectedMidiNames.size() - 1].set("", ""));
+        _selectionGroup.add(_selectedMidiNames.back().set("", ""));
     }
 
     _selectedMidiNames[0].set("Target", "None");
