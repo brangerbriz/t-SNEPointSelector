@@ -102,7 +102,8 @@ void DataHandler::saveTSNESelections(const vector<TSNESelection>& selections){
         }
     }
 
-    ofBuffer buff(csv);
+    ofBuffer buff;
+    buff.set(csv);
     ofBufferToFile("t-SNE_selection_data.csv", buff);
 
     csv = ",points\n";
@@ -111,7 +112,8 @@ void DataHandler::saveTSNESelections(const vector<TSNESelection>& selections){
         csv += ofToString(i) + "," + _polyToString(selections[i].poly) + "\n";
     }
 
-    ofBuffer buff2(csv);
+    ofBuffer buff2;
+    buff2.set(csv);
     ofBufferToFile("t-SNE_selections.csv", buff2);
 }
 
@@ -125,7 +127,8 @@ void DataHandler::saveKnnSearch(string selected, const vector<pair<int, float> >
         csv += ofToString(i) + "," + selected + "," + neighborId + "," + distance + "\n";
     }
 
-    ofBuffer buff(csv);
+    ofBuffer buff;
+    buff.set(csv);
     ofBufferToFile("knn_searches/knn_" + selected + ".csv", buff);
 }
 

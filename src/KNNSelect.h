@@ -9,7 +9,7 @@ public:
 
     KNNSelector();
     void index();
-    ofx::KDTree<ofVec2f>::SearchResults getKNearest2D(ofPoint point, int k);
+    ofx::KDTree<ofVec2f>::SearchResults getKNearest2D(ofVec2f point, int k);
     vector<pair<int, float>> getKNearest(int nDIndex, int k, vector<bool> mask);
     vector<ofVec2f>& get2DPoints();
     vector<vector<float> >& getNDPoints();

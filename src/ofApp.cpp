@@ -76,7 +76,8 @@ void ofApp::draw(){
         {
             ofMesh pointMesh;
             pointMesh.setMode(OF_PRIMITIVE_POINTS);
-            pointMesh.addVertex(knnSelector.get2DPoints()[dataHand.getMidiIndexFromIdentifier(selected)]);
+            ofVec3f v = knnSelector.get2DPoints()[dataHand.getMidiIndexFromIdentifier(selected)];
+            pointMesh.addVertex(v);
             ofSetColor(255, 0, 0);
             pointMesh.draw();
         }
@@ -127,14 +128,6 @@ void ofApp::knnSave()
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
-}
-
-void ofApp::mouseScrolled(int x, int y, float scrollX, float scrollY) {
-
-}
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
@@ -177,15 +170,6 @@ void ofApp::keyReleased(int key){
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
@@ -224,32 +208,3 @@ void ofApp::mousePressed(int x, int y, int button){
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}

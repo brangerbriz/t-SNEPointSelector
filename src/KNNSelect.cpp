@@ -22,7 +22,7 @@ void KNNSelector::index()
     _2DHash.buildIndex();
 }
 
-ofx::KDTree<ofVec2f>::SearchResults KNNSelector::getKNearest2D(ofPoint point, int k)
+ofx::KDTree<ofVec2f>::SearchResults KNNSelector::getKNearest2D(ofVec2f point, int k)
 {
     _2DHashResults.clear();
     _2DHashResults.reserve(k);
@@ -62,7 +62,7 @@ vector<pair<int, float> > KNNSelector::getKNearest(int nDIndex, int k, vector<bo
         results[i] = pair<int, float>(i, dist);
     }
 
-    std::sort(results.begin(), results.end(), [](auto a, auto b) { return a.second < b.second; });
+    std::sort(results.begin(), results.end(), [](const pair<int, float>& a, const pair<int, float>& b) { return a.second < b.second; });
     vector<pair<int, float> > res(results.begin(), results.begin() + k);
     return res;
 }

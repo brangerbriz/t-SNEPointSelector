@@ -46,7 +46,7 @@ void GUI::setup(const vector<string> &toggleNames)
     for (int i = 0; i < 29; i++)
     {
         _selectedMidiNames.push_back(ofParameter<string>());
-        _selectionGroup.add(_selectedMidiNames[_selectedMidiNames.size() - 1].set("", ""));
+        _selectionGroup.add(_selectedMidiNames.back().set("", ""));
     }
 
     _selectedMidiNames[0].set("Target", "None");
@@ -63,6 +63,8 @@ void GUI::setup(const vector<string> &toggleNames)
     _panel.setup(_panelGroup, "panel0.xml", x, y);
     _panel.add(_knnSearchButton.setup("Search"));
     _panel.add(_knnSaveButton.setup("Save"));
+
+    _filenamePanel.setup();
 
     _featureMask.resize(toggleNames.size(), true);
     _updateFeatureMask();
