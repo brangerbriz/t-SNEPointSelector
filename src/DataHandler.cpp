@@ -129,7 +129,9 @@ void DataHandler::saveKnnSearch(string selected, const vector<pair<int, float> >
 
     ofBuffer buff;
     buff.set(csv);
-    ofBufferToFile("knn_searches/knn_" + selected + ".csv", buff);
+    string filename = "knn_searches/knn_" + selected + ".csv";
+    ofBufferToFile(filename, buff);
+    ofSystem("python ~/" + ofToDataPath("knn_search_to_symlink.py") +  " " + filename);
 }
 
 string DataHandler::_polyToString(const ofPolyline poly)
